@@ -64,6 +64,23 @@ def numpyLoad(path):
     d = np.loadtxt(path,delimiter=',',skiprows=1,dtype='object')
     print(d)
 
+    ###
+    # numpy array split (numpy ndarray 切片方法)
+    # refer: https://docs.scipy.org/doc/numpy-dev/user/quickstart.html#indexing-with-arrays-of-indices
+    #
+    # 1. 通过numpy 自带库 hsplit, vsplit, array_split (水平，竖直，任意轴)
+    # 2. 通过fancy indexing and index tricks
+    #       2.1 indexing with Arrays of Indices
+    #       2.2 indexing with Boolean Arrays
+    #       2.3 the ix_() function
+    #       2.4 Indexing with strings
+    ###
+
+    # 1. 通过numpy自带split方法，此处根据x,y切分需要，利用hspit方法
+
+
+
+
     # # [0,2,4] part is the index part; index of colunm, start from 0
     # # 3: is the start row of d, row start from 0
     # print(d[3:,[0,2,4]])

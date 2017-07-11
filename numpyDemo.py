@@ -50,4 +50,7 @@ print("type(b): ", end='')
 print(type(b))
 
 ###
+# II. operation
 #
+###
+

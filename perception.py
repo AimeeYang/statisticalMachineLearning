@@ -3,7 +3,8 @@
 
 ###
 # ch2 perception
-# 判别模型，线性，多解 TODO 补解依赖
+# 判别模型，线性，多解
+# 多解依赖于初值的选择和过程中随机误分类点的选择
 # data: Iris data ./data/iris.data.txt
 #       url: https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data
 # loss func: 误分类点到超平面距离之和

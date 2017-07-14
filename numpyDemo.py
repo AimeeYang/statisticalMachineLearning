@@ -173,6 +173,8 @@ print(e[0:5, 1])
 print("e[1:3, : ]: ", end='')
 print(e[1:3, : ])
 
+# TODO TRY SLICE WITH STEP IN EACH DIM
+
 
 
 

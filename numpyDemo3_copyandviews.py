@@ -1,6 +1,11 @@
 import numpy as np
 
 ###
+# learning record while learning
+# https://docs.scipy.org/doc/numpy-dev/user/quickstart.html#splitting-one-array-into-several-smaller-ones
+###
+
+###
 #   Copies and Views
 #       When operating and manipulating arrays, their data is sometimes
 #   copied into a new array and sometimes not. There are three cases:

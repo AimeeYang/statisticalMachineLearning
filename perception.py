@@ -17,16 +17,20 @@ import numpy as np
 import matplotlib
 import pandas as pd
 import tensorflow as tf
+from LoadHelper import *
 
 learningRate = 0.001
 trainPath = "./data/iris.data.txt"
 
 # type: train, dev, test
 # path: data file path
-def loadData(type,path):
+def loadData(type, path):
+    x,y = pythonlibLoad(path)
     return 0
 
-def lossFunc():
+# 基于随机梯度下降 + 所选误分类点到超平面的距离
+# 超平面：kw+b
+def lossFunc(x, k, b):
     return 0
 
 def perception(): # TODO parameter that can be used to different np.array.shape

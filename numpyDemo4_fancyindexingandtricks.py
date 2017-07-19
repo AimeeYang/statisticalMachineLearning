@@ -238,49 +238,56 @@ import numpy as np
 # print("v after v[[0,0,2]]+=1: ")
 # print(v)
 
+# ###
+# # II. indexing with boolean arrays
+# #       When index arrays with arrays of (integer) indices we providing the
+# #   list of indices to pick.
+# #       With boolean indices the approach is different; we explicitly choose
+# #   which items in the array we want and which ones we don't.
+# #       1. indexing using boolean arrays, that have the same shape as the original array.
+# #       2. indexing with boolean that is similar to integer indexing:
+# #           for each dimension of the array we give a 1D boolean array selecting the slices we want.
+# ###
+#
+# # 1. indexing using boolean arrays, that have the same shape as the original array.
+# w = np.arange(12).reshape(3,4)
+# x = w > 4   # x is a boolean with w's shape
+# print("w:")
+# print(w)
+# print("x=w>4")
+# print(x)
+# print("w[x]")
+# # 注意此处w[x]是一维的！！！
+# print(w[x]) # w[x] 1d array with the selected elements
+# # can be useful in assignments:
+# w[x]=99     # all elements of 'w' greater than 4 becames 99
+# print("after w[x]=99, w:")
+# print(w)
+#
+# # example: mandelbrot :
+# #               use boolean indexing to generate an image of the Mandelbrot set.
+#
+# # 2. indexing with boolean that is similar to integer indexing
+# #       for each dimension of the array we give a 1D boolean array selecting the slices we want.
+# y = np.arange(12).reshape(3,4)
+# print("y: ")
+# print(y)
+# boolean_index_1 = np.array([False, True, True])     # first dim selection
+# boolean_index_2 = np.array([True, False, True, False])  # second dim selection
+# print("y[boolean_index_1,:]: ")
+# print(y[boolean_index_1,:])     # selecting rows
+# print("y[boolean_index_1]: ")
+# print(y[boolean_index_1])       # y[boolean_index_1,:] <=> y[boolean_index_1]
+# print("y[:,boolean_index_2]: ")
+# print(y[:,boolean_index_2])     # selecting colunms
+#
+# # 注：下面例子的结果很特殊 ！！！
+# print("y[boolean_index_1,boolean_index_2]: ")
+# print(y[boolean_index_1,boolean_index_2])       # a weird thing to do
+
+# todo 补充ix_()
 ###
-# II. indexing with boolean arrays
-#       When index arrays with arrays of (integer) indices we providing the
-#   list of indices to pick.
-#       With boolean indices the approach is different; we explicitly choose
-#   which items in the array we want and which ones we don't.
-#       1. indexing using boolean arrays, that have the same shape as the original array.
-#       2. indexing with boolean that is similar to integer indexing:
-#           for each dimension of the array we give a 1D boolean array selecting the slices we want.
+# III. the ix_() function
+#       The ix_ function can be used to combine different vectors so as to obtain
+#    the result for each n-uplet.
 ###
-
-# 1. indexing using boolean arrays, that have the same shape as the original array.
-w = np.arange(12).reshape(3,4)
-x = w > 4   # x is a boolean with w's shape
-print("w:")
-print(w)
-print("x=w>4")
-print(x)
-print("w[x]")
-# 注意此处w[x]是一维的！！！
-print(w[x]) # w[x] 1d array with the selected elements
-# can be useful in assignments:
-w[x]=99     # all elements of 'w' greater than 4 becames 99
-print("after w[x]=99, w:")
-print(w)
-
-# example: mandelbrot :
-#               use boolean indexing to generate an image of the Mandelbrot set.
-
-# 2. indexing with boolean that is similar to integer indexing
-#       for each dimension of the array we give a 1D boolean array selecting the slices we want.
-y = np.arange(12).reshape(3,4)
-print("y: ")
-print(y)
-boolean_index_1 = np.array([False, True, True])     # first dim selection
-boolean_index_2 = np.array([True, False, True, False])  # second dim selection
-print("y[boolean_index_1,:]: ")
-print(y[boolean_index_1,:])     # selecting rows
-print("y[boolean_index_1]: ")
-print(y[boolean_index_1])       # y[boolean_index_1,:] <=> y[boolean_index_1]
-print("y[:,boolean_index_2]: ")
-print(y[:,boolean_index_2])     # selecting colunms
-
-# 注：下面例子的结果很特殊 ！！！
-print("y[boolean_index_1,boolean_index_2]: ")
-print(y[boolean_index_1,boolean_index_2])       # a weird thing to do

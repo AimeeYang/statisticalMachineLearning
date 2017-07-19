@@ -99,7 +99,7 @@ def pandaLoad(path):
     #TODO 补全x,y
 
 
-### fro iris data
+### for iris data
 def strLabelCovertToIntLabel(labelstr):
     ### in python3 use dictionary instead of switch,
     ### below with default value -1 when labelstr is not found

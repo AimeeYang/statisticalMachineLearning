@@ -27,13 +27,14 @@ trainPath = "./data/iris.data.csv"
 def loadData(type, path):
     x,y = pythonlibLoad(path)
     x1 = x[0:99:5,0:2]
+    x1 = np.array(x1).astype(np.float) # 转str类型的array为float类型的array
     print(x1)
     y1 = y[0:99:5]
 
     y1 = list(map(renamelabel,y1))
     print(y1)
-    x1 = np.array(x1)
-    y1 = np.array(y1)
+
+    y1 = np.array(y1) # TODO 此处的y1.shape 为什么不是 int 1 而是 tuple (1,)? 是否因为shape的类型是tuple的
     return x1,y1
 
 def renamelabel(l):
@@ -51,32 +52,49 @@ def lossFunc(x, k, b):
 def perception(w, b, learnRate): # TODO parameter that can be used to different np.array.shape
     x,y = loadData("train",trainPath)
     hasWrong=True
+    recursivetime =0
     while(hasWrong):
         # TODO how rand choose wrong point
-        rundomcount=20
-        rundomtry=0
-        while(rundomtry < rundomcount):
-            r = np.random.randint(0,20,1,dtype='int')
-            if (w.T.dot(x[r])+b)*y[r] < 0:
+        recursivetime += 1
+        print("===== recursivetime: "+str(recursivetime))
+        randomcount=20
+        randomtry=0
+        while(randomtry < randomcount):
+            print("randomtry: "+str(randomtry)+", b: "+str(b)+", w: ")
+            print(w)
+            r = np.random.randint(0,20,1,dtype='int')[0]
+            # 下面注意dtype 避免出现str类型的array;
+            #   否则回报 错误：ValueError: data type must provide an itemsize
+            print("w.dot(x[r].T)+b)*y[r]: " +str((w.dot(x[r].T)+b)*y[r]))
+            if (w.dot(x[r].T)+b)*y[r] <= 0:   # 此处<=0
                 w = w + learningRate*y[r]*x[r]
                 b = b + learningRate*y[r]
                 break
             else:
-                rundomtry+=1
-        if(rundomtry >= rundomcount):
+                randomtry+=1
+        if(randomtry >= randomcount):
             for i in range(y.shape[0]):
-                if (w.T.dot(x[r]) + b) * y[r] < 0:
+                print("i: "+str(i))
+                if (w.dot(x[r].T) + b) * y[r] <= 0:
                     w = w + learningRate * y[r] * x[r]
                     b = b + learningRate * y[r]
                     break
-            if i >= y.shape[0]:
+            if i >= y.shape[0]-1:
                 hasWrong = False
+                print("TOTAL END *****************")
         else:
             continue
+
+    print("b: " + str(b) + ", w: ")
+    print(w)
+    return w,b
 
 
 if __name__ == "__main__":
     w=np.array([0,0]) #超参数初值
     b=0
-    perception(w,b, learningRate)
+    # TODO draw the process of hyperplane with plt, dynamic & result
+    w1, b1 = perception(w,b, learningRate)
+    print("b1: "+str(b1)+", w1: ")
+    print(w1)
 

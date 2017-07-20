@@ -9,7 +9,7 @@ import numpy as np
 # I. basic concept:
 # numpy ndarray
 # basic property
-# TODO 整理笔记; 补reshape vs shape
+# TODO 整理笔记; 补reshape vs shape? shape 的类型是tuple?
 # shape: (,,) : 从左至右对应 array 由内到外
 #             : 其他理解方法： 对应坐标轴 shape=(z,y,x) ndarray= [[[x个] y个] z个]
 ###

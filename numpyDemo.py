@@ -9,17 +9,21 @@ import numpy as np
 # I. basic concept:
 # numpy ndarray
 # basic property
-# TODO 整理笔记; 补reshape vs shape? shape 的类型是tuple?
+# TODO 整理笔记; 补reshape vs shape?
+# shape 的类型是tuple
 # shape: (,,) : 从左至右对应 array 由内到外
 #             : 其他理解方法： 对应坐标轴 shape=(z,y,x) ndarray= [[[x个] y个] z个]
 ###
 
-# a = np.arange(24).reshape(2,3,4)
+a = np.arange(24).reshape(2,3,4)
+a1 = np.array([[1],[2]])
 # b = np.arange(8).reshape(2,4)
 # print("a: ")
 # print(a)
 # print("a.shape: ",end='') # print without newline in python 3
 # print(a.shape)
+print(type(a.shape))
+print(type(a1.shape))
 # print("a.ndim: ", end='')
 # print(a.ndim)
 # print("a.itemsize: ", end='')
@@ -87,7 +91,7 @@ import numpy as np
 # 总： 支持一般的矩阵操作，其他运算操作(+，*)相当于map，并map到每个元素
 #      一些操作也支持指定轴
 #      注意操作是否产生新array
-# TODO 整理操作example based on the tutorial，并注意整理操作是否产生新array
+# TODO 整理操作example based on the tutorial，并注意整理操作是否产生新array, 可参考 numpyDemo3_copyandviews.py
 #
 
 
@@ -95,6 +99,10 @@ import numpy as np
 # I one-dimensional arrays can be indexed, sliced and iterated most like
 #   list and other Python sequence
 # II multidimensional
+#   1. 单值
+#       和坐标类似，如二维[rowindex,colindex]
+#   2. 某块
+#       各个维度上slice组合
 
 
 # # one-dimensional

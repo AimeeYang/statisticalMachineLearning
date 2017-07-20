@@ -34,7 +34,7 @@ def loadData(type, path):
     y1 = list(map(renamelabel,y1))
     print(y1)
 
-    y1 = np.array(y1) # TODO 此处的y1.shape 为什么不是 int 1 而是 tuple (1,)? 是否因为shape的类型是tuple的
+    y1 = np.array(y1) # 此处的y1.shape 为什么不是 int 1 而是 tuple (1,) => 因为shape的类型是tuple的
     return x1,y1
 
 def renamelabel(l):

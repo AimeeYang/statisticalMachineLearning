@@ -9,6 +9,8 @@ import numpy as np
 # So that load data with numpy or pandas will be convenient.
 ###
 
+# TODO use sklearn的数据预处理
+
 def preprocess_changeLabelType(orifile, newfile,convertLabelfunc):
     data = np.genfromtxt(orifile ,delimiter=',', dtype=None,
                          names=('sepal_length','sepal_width','petal_length','petal_width','class'),skip_header=1) # 注意skiprows start from 1

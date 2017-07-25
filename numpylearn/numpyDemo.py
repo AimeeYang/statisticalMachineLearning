@@ -22,7 +22,7 @@ import numpy as np
 #           二                   y,     axis=1
 #           三                   x,     axis=0
 #
-# 综上：shape & indexing: -> （在array上的方向）
+# 综上：shape & indexing: -> （在array上的方向） **！！！
 #       axis:             <-
 ###
 

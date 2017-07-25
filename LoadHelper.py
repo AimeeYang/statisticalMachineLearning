@@ -61,8 +61,7 @@ def pythonlibLoad(path):
 # numpy读入
 def numpyLoad(path):
     # d = np.load()
-    # TODO numpy loadtxt with converters
-    # TODO data = np.loadtxt(path, dtype=float, delimiter=',', converters={4: iris_type})
+    # numpy loadtxt with converters
     d = np.loadtxt(path,dtype=float, delimiter=',', converters={4: strLabelCovertToIntLabel},skiprows=1)
     #d = np.loadtxt(path,delimiter=',',skiprows=1,dtype='object')
 

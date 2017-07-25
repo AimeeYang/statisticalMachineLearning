@@ -11,8 +11,19 @@ import numpy as np
 # basic property
 # TODO 整理笔记; 补reshape vs shape?
 # shape 的类型是tuple
-# shape: (,,) : 从左至右对应 array 由内到外
+# shape: (,,) : 从左至右对应 array “由外到内”
 #             : 其他理解方法： 对应坐标轴 shape=(z,y,x) ndarray= [[[x个] y个] z个]
+# axis 计数从0开始，从array “由内到外” 开始。
+#       与shape(z,y,x)对应：x 的axis=0
+#                           y 的axis=1
+#                           z 的axis=2
+# 索引的时候[:,:,:] ','前后对应到array是由“由外到内”的，
+#       即第一个‘：’对应shape的z, 对应axis=2
+#           二                   y,     axis=1
+#           三                   x,     axis=0
+#
+# 综上：shape & indexing: -> （在array上的方向）
+#       axis:             <-
 ###
 
 a = np.arange(24).reshape(2,3,4)

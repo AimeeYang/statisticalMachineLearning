@@ -13,8 +13,19 @@
 #
 ###
 
-def loadData():
-    return None
+import numpy as np
+import matplotlib.pyplot as plt
+from LoadHelper import *
+
+def loadData(filePath):
+    x, y = numpyLoad(filePath)
+    # for calculate simply, use the first column
+    x = x[:, :2]
+    print("x: ")
+    print(x)
+    print("y: ")
+    print(y)
+    return x,y
 
 def distance():
     return None
@@ -25,9 +36,16 @@ def buildKD():
 def searchKD():
     return None
 
+###
+# k neighbour store in stack(大根堆)
+# if not k not much, maybe using normal sorted list/array is more efficency
+###
 def normalKNN():
     return None
 
 def kdBasedKNN():
     return None
 
+if __name__ == "__main__":
+    filePath = "./data/iris.data.txt"
+    x, y = loadData(filePath)

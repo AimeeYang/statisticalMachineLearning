@@ -63,9 +63,16 @@ def numpyLoad(path):
     # d = np.load()
     # TODO numpy loadtxt with converters
     # TODO data = np.loadtxt(path, dtype=float, delimiter=',', converters={4: iris_type})
-    d = np.loadtxt(path,delimiter=',',skiprows=1,dtype='object')
-    print(d)
+    d = np.loadtxt(path,dtype=float, delimiter=',', converters={4: strLabelCovertToIntLabel},skiprows=1)
+    #d = np.loadtxt(path,delimiter=',',skiprows=1,dtype='object')
 
+    #print(d)
+    x, y = np.split(d,(4,),axis=1)
+    print("x: ")
+    print(x)
+    print("y: ")
+    print(y)
+    return x, y
     ###
     # numpy array split (numpy ndarray 切片方法)
     # refer: https://docs.scipy.org/doc/numpy-dev/user/quickstart.html#indexing-with-arrays-of-indices
@@ -86,11 +93,11 @@ def numpyLoad(path):
     # # [0,2,4] part is the index part; index of colunm, start from 0
     # # 3: is the start row of d, row start from 0
     # print(d[3:,[0,2,4]])
-    i = np.array([True,True,True,True,False])
-    #  d[i,3] 3 colunm index, start from 0
-    print(d[i,3])
-    print(d[i])
-    # TODO 补全x,y with numpy array split
+    # i = np.array([True,True,True,True,False])
+    # #  d[i,3] 3 colunm index, start from 0
+    # print(d[i,3])
+    # print(d[i])
+    # # TODO 补全x,y with numpy array split
 
 
 # pandas读入
@@ -106,9 +113,9 @@ def strLabelCovertToIntLabel(labelstr):
     ### in python3 use dictionary instead of switch,
     ### below with default value -1 when labelstr is not found
     return{
-        'Iris-setosa': 1,
-        'Iris-versicolor': 2,
-        'Iris-virginica': 3
+        b'Iris-setosa': 1,
+        b'Iris-versicolor': 2,
+        b'Iris-virginica': 3
     }.get(labelstr,-1) # -1 is the default value when labelstr is not found
 
     # return {

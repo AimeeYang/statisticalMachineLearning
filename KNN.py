@@ -17,6 +17,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from LoadHelper import *
 import operator
+from collections import OrderedDict
 
 def loadData(filePath):
     x, y = numpyLoad(filePath)
@@ -43,7 +44,8 @@ def distance(p,x1,x2):
         return np.sqrt(np.sum(np.array((x1-x2)**2).flat))
     return None
 
-def buildKD():
+def buildKD(x_train):
+    axescnt = x_train.shape[]
     return None
 
 def searchKD():
@@ -57,24 +59,36 @@ def searchKD():
 def normalKNN(x_test, x_train, y_train, k, p):
     y_test_pre = []
     for i in range(x_test.shape[0]):
-        y_tmp = [] # maintain y_tmp be a sorted map: asc
+        #y_tmp = np.empty((1,2)) #[] # maintain y_tmp be a sorted map: asc
+        y_tmp = {}
 
         for j in range(x_train.shape[0]):
             tmp_dist = distance(p, x_test[i],x_train[j])
             if len(y_tmp) < k:
-                # TODO try convert between numpy ndarray and python array
-                y_tmp.append([tmp_dist, j]) # TODO AttributeError: 'numpy.ndarray' object has no attribute 'append'
-                y_tmp = np.sort(y_tmp, axis=0) # sort along the first axis
+                # y_tmp = np.append(y_tmp,[[tmp_dist,j]],axis=0) #y_tmp.append([tmp_dist, j])
+                # y_tmp = np.sort(y_tmp, axis=0) # sort along the first axis
+
+                #y_tmp[tmp_dist] = j # 这里存在问题 key的值不唯一
+                y_tmp[j] = tmp_dist
+                # # map sort by key
+                # y_tmp = OrderedDict(sorted(y_tmp.items(), key=lambda t: t[0]))
+                # # <=> y_tmp = OrderedDict(sorted(y_tmp.items()))
+                # map sort by value
+                y_tmp = OrderedDict(sorted(y_tmp.items(), key=lambda t: t[1]))
+                # # map sort by key length
+                # y_tmp = OrderedDict(sorted(y_tmp.items(), key=lambda t: len(t[0])))
+                print("y_tmp")
+                print(y_tmp)
             else:
-                if tmp_dist < y_tmp[2][0]:
-                    y_tmp.remove(2)
-                    y_tmp.append([tmp_dist,j])
-                    y_tmp = np.sort(y_tmp, axis=0)
+                if tmp_dist < y_tmp.values()[k-1]:
+                    y_tmp.pop(y_tmp.keys()[k-1])
+                    y_tmp[j] = tmp_dist
+                    y_tmp = OrderedDict(sorted(y_tmp.items(), key=lambda t: t[1]))
 
         # 多数表决
         y_label_tmp = {}
         for n in range(k):
-            curlabel = y_train[y_tmp[n][1]]
+            curlabel = y_train[y_tmp.keys()[n]]
             if len(y_label_tmp) == 0:
                 y_label_tmp[curlabel] = 1
             else:

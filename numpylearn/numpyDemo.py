@@ -23,18 +23,52 @@ import numpy as np
 #           三                   x,     axis=0
 #
 # 综上：shape & indexing: -> （在array上的方向） **！！！
-#       axis:             <-
+#       axis:             ->
 ###
 
-a = np.arange(24).reshape(2,3,4)
-a1 = np.array([[1],[2]])
+# a = np.arange(24).reshape(2,3,4)
+# a1 = np.array([[1],[2]])
 # b = np.arange(8).reshape(2,4)
 # print("a: ")
 # print(a)
 # print("a.shape: ",end='') # print without newline in python 3
 # print(a.shape)
-print(type(a.shape))
-print(type(a1.shape))
+# print(type(a.shape))
+# print(type(a1.shape))
+###
+# AXIS dimension rank:
+#       In numpy, dimensions are called axes.
+#               the number of axes is rank.
+#   BY sort():
+#       axis: 计数方向 ->
+#       在sort中， 意为沿着指定axis 排序 (asc)
+###
+a2 = np.random.random((2,2))
+print("a2: ")
+print(a2)
+print("a2.ndim: ", end='')
+print(a2.ndim)
+print("np.sort(a2,axis=0): ")
+print(np.sort(a2,axis=0))
+print("np.sort(a2, axis=1): ")
+print(np.sort(a2, axis=1))
+# print("np.sort(a2, axis=2): ") # ValueError: axis(=2) out of bounds
+# print(np.sort(a2, axis=2))
+
+a3 = np.random.random((3,4))
+print("a3: ")
+print(a3)
+print("a3.ndim: ",end='')
+print(a3.ndim)
+print("np.sort(a3, axis=0):")
+print(np.sort(a3, axis=0))
+print("np.sort(a3, axis=1):")
+print(np.sort(a3, axis=1))
+# print("np.sort(a3, axis=0):")
+# print(np.sort(a3, axis=2))
+
+
+
 # print("a.ndim: ", end='')
 # print(a.ndim)
 # print("a.itemsize: ", end='')

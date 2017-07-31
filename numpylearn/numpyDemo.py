@@ -6,10 +6,23 @@ import numpy as np
 ###
 
 ###
+#   Python list vs numpy array
+# 标准Python的列表(list)中，元素本质是对象。
+# Python list不关心数据项类型，即任一数据项可以是任意类型 => 运算性能低于numpy的ndarray
+# 如：L = [1, 2, 3]，需要3个指针和三个整数对象，对于数值运算比较浪费内存和CPU。
+# 因此，Numpy提供了ndarray(N-dimensional array object)对象：存储单一数据类型的多维数组。
+# refer from teacher zoubo
+###
+
+
+###
 # I. basic concept:
 # numpy ndarray
 # basic property
-# TODO 整理笔记; 补reshape vs shape?
+# TODO 整理笔记;
+# reshape vs shape：
+#       reshape 原array shape不变
+#       shape   原array shape变；
 # shape 的类型是tuple
 # shape: (,,) : 从左至右对应 array “由外到内”
 #             : 其他理解方法： 对应坐标轴 shape=(z,y,x) ndarray= [[[x个] y个] z个]
@@ -24,6 +37,12 @@ import numpy as np
 #
 # 综上：shape & indexing: -> （在array上的方向） **！！！
 #       axis:             ->
+#
+# 更改元素类型：
+#       如果更改元素类型，可以使用astype安全的转换；但不要强制仅修改元素类型，
+#   如下面这句，将会以int来解释单精度float类型
+#       d.dtype = np.int
+#       f = d.astype(np.int) # Better
 ###
 
 # a = np.arange(24).reshape(2,3,4)
@@ -71,6 +90,7 @@ print(np.sort(a3, axis=1))
 # reshape use of -1 : 只是为了方便，减少运算(因为自动算出其余维度)
 #       eg. np.arange(0, 60, 10).reshape((-1, 1))
 #         <=> np.arange(0, 60, 10).reshape((6, 1)) # 此处自动算出行的个数
+# 综上： 当某个轴为-1时，将根据数组元素的个数自动计算此轴的长度
 print(np.arange(0, 60, 10).shape)
 print(np.arange(0, 60, 10).reshape(-1))
 print(np.arange(0, 60, 10).reshape(-1).shape)

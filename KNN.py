@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 from LoadHelper import *
 import operator
 from collections import OrderedDict
+import math
 
 def loadData(filePath):
     x, y = numpyLoad(filePath)
@@ -44,9 +45,52 @@ def distance(p,x1,x2):
         return np.sqrt(np.sum(np.array((x1-x2)**2).flat))
     return None
 
-def buildKD(x_train):
-    axescnt = x_train.shape[]
-    return None
+
+def get_mid(curdata, axis_no):
+    cnt = curdata.shape[0]
+    tmpdata =  curdata[:,axis_no]
+    sorteddata = sorted(tmpdata)
+    return sorteddata[math.floor(cnt/2)]
+
+'''
+:parameter childname = "Left"/"Right"
+'''
+def buildKD(remain_data, axis_no, parent, childname):
+    if (remain_data == None) or (remain_data.shape[0] == 0):
+        return
+
+    # build remain_data
+    remain_less_data=[]
+    remain_more_data=[]
+    node = {}   # TODO whether use class/struct
+
+    mid = get_mid(remain_data,axis_no)
+    node["mid"] = mid
+    node["axis"] = axis_no
+    for d in remain_data:
+        if d[axis_no] < mid:
+            remain_less_data.append(d)
+        elif d[axis_no] > mid:
+            remain_more_data.append(d)
+        else:
+            if "data" in node.keys():
+                node["data"].append(d)
+            else:
+                node["data"] = []
+                node["data"].append(d)
+
+    axescnt = remain_data.shape[1]
+    new_axis_no = (axis_no + 1)%axescnt
+    buildKD(np.array(remain_less_data), new_axis_no, node, "Left")
+    buildKD(np.array(remain_more_data), new_axis_no, node, "Right")
+
+    if parent is None:
+        return node     # 返回构建好的kd树的根节点
+    else:
+        if childname == "Left":
+            parent["Left"] = node
+        else:
+            parent["Right"] = node
 
 def searchKD():
     return None
@@ -104,7 +148,8 @@ def normalKNN(x_test, x_train, y_train, k, p):
     y_test_pre = np.array(y_test_pre)
     return y_test_pre
 
-def kdBasedKNN():
+def kdBasedKNN(x_test, x_train, y_train, k, p):
+    root = buildKD(x_train,0, None, "")
     return None
 
 if __name__ == "__main__":
@@ -126,5 +171,14 @@ if __name__ == "__main__":
     # print(x_train)
     y_train = np.vstack((y[10:50],y[60:100],y[110:150]))
 
-    y_test_pre = normalKNN(x_test, x_train, y_train, k, p)
+    #y_test_pre = normalKNN(x_test, x_train, y_train, k, p) # TODO ACCURACY
+
+    #test data for kd tree build
+    x_train=np.array([[2,3],
+             [5,4],
+             [9,6],
+             [4,7],
+             [8,1],
+             [7,2]])
+    y_test_pre2 = kdBasedKNN(x_test, x_train, y_train, k, p)
 

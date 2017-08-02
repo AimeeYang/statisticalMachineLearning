@@ -67,6 +67,7 @@ def buildKD(remain_data, axis_no, parent, childname):
     mid = get_mid(remain_data,axis_no)
     node["mid"] = mid
     node["axis"] = axis_no
+    node["parent"] = parent
     for d in remain_data:
         if d[axis_no] < mid:
             remain_less_data.append(d)
@@ -92,8 +93,114 @@ def buildKD(remain_data, axis_no, parent, childname):
         else:
             parent["Right"] = node
 
-def searchKD():
-    return None
+def searchKDFindNode(root, target):
+    # down find target belong to which leave
+
+    if root["mid"] == target[root["axis"]]:
+        return root
+    elif root["mid"] < target[root["axis"]]:
+        if "Left" in root.keys:
+            searchKDFindNode(root["Left"],target)
+        else:
+            return root
+    else:
+        if "Right" in root.keys:
+            searchKDFindNode(root["Right"],target)
+        else:
+            return root
+
+'''
+check curnode's parent's other child, namely curnode's brother
+'''
+def isBrotherIntersect(target, curnode, kneighbour, p, k):
+    # TODO make sure here is the minumum or the k-th neighbour
+    minimumNeighbour = kneighbour[k-1] # suppose kneighbour is sorted list and with asc order
+    r = distance(p,minimumNeighbour, target)
+    mid_of_curnode_and_brother = curnode["parent"]["mid"]
+    parent_axis = curnode["parent"]["axis"]
+    return math.fabs(target[parent_axis] - mid_of_curnode_and_brother) <= r
+
+def buildKNeighbourByAList(data, kneighbour,target, k, p):
+    if kneighbour is None:
+        kneighbour = []
+    for d in data:
+        dis = distance(p, d, target)
+        if len(kneighbour) < k:
+            kneighbour.append({"data": d,
+                               "dist": dis})
+        else:
+            sorted_kneighbour = OrderedDict(sorted(kneighbour.items(), key=lambda t: t[1]))
+            if dis < sorted_kneighbour[k-1]["dist"]:
+                kneighbour.pop(k-1)
+                kneighbour.append({"data": d,
+                                   "dist": dis})
+    return kneighbour
+
+def upAndDownSearch(node, kneighbour, target, p, k):
+    if kneighbour is None:
+        kneighbour = []
+
+    # search node's data
+    kneighbour =buildKNeighbourByAList(node["data"], kneighbour, target, k, p)
+
+    # search parent node's data
+    if "parent" in node.keys and node["parent"] != None :
+        parent = node["parent"]
+        kneighbour = buildKNeighbourByAList(parent["data"], kneighbour, target, k, p)
+        # check if intersect with node's brother
+        if isBrotherIntersect(target, node, kneighbour,p, k):
+            if node["mid"] < parent["mid"]:
+                kneighbour = downSearch(parent["Right"], kneighbour, target, p, k)
+            else: # here children's mid must not equal to parent's mid
+                kneighbour = downSearch(parent["Left"], kneighbour, target, p, k)
+
+    return kneighbour
+
+def isBrotherChildrenIntersect(target, brother, childtype, kneighbour, p, k):
+    brothermid = brother["mid"]
+    brotheraxis = brother["axis"]
+    # TODO make sure here is the minumum or the k-th neighbour
+    minimumNeighbour = kneighbour[k - 1]  # suppose kneighbour is sorted list and with asc order
+    r = distance(p, minimumNeighbour, target)
+    parent = brother["parent"]
+    parentmid = parent["mid"]
+    if(childtype == "Left" and target[brotheraxis] < brothermid) or (childtype == "Right" and target[brotheraxis] > brothermid):
+        return math.fabs(target[parent["mid"]] - parentmid) <= r
+    else:
+        parentbrotherdot = [0,0]
+        if parent["axis"] > brotheraxis :
+            parentbrotherdot = np.array([brothermid, parentmid])
+        else:
+            parentbrotherdot = np.array([parentmid, brothermid])   # TODO multidimension how get the 交点
+        dis_neighbour_dot = distance(p, target, parentbrotherdot)
+        return dis_neighbour_dot <= r
+
+
+def downSearch(node, kneighbour, target, p, k):
+    # search node's data
+    kneighbour = buildKNeighbourByAList(node["data"], kneighbour, target, k, p)
+
+    # search node's Left child
+    if "Left" in node.keys and isBrotherChildrenIntersect(target, node, "Left", kneighbour, p, k):
+        kneighbour = downSearch(node["Left"], kneighbour, target, p, k)
+
+    # search node's Right child
+    if "Right" in node.keys and isBrotherChildrenIntersect(target, node, "Right", kneighbour, p, k):
+        kneighbour = downSearch(node["Right"], kneighbour, target, p, k)
+
+    return kneighbour
+
+def getKNNBasedOnKDTree(root, target, k, p):
+    node = searchKDFindNode(root, target)
+    # 1. up till root find the nearest neighbour? TODO check if need till root? any optimize
+    # 2 node's brother check by circle cross, if cross, then, recursive search brother and its childern.
+    #   TODO CHECK what is the end point, lefe or any optimize
+
+    # Here up to root, and if down, till leave
+    # TODO 圆与区域相交的判别方法  target与各节点的mid值 的距离 与 圆的半径比较 <= 则相交
+    kneighbour = upAndDownSearch(node, None, target, p, k)
+
+    # TODO 多数表决
 
 #TODO try array sort desc
 ###
@@ -148,6 +255,9 @@ def normalKNN(x_test, x_train, y_train, k, p):
     y_test_pre = np.array(y_test_pre)
     return y_test_pre
 
+'''
+:parameter p: p - distance
+'''
 def kdBasedKNN(x_test, x_train, y_train, k, p):
     root = buildKD(x_train,0, None, "")
     return None
@@ -173,12 +283,12 @@ if __name__ == "__main__":
 
     #y_test_pre = normalKNN(x_test, x_train, y_train, k, p) # TODO ACCURACY
 
-    #test data for kd tree build
-    x_train=np.array([[2,3],
-             [5,4],
-             [9,6],
-             [4,7],
-             [8,1],
-             [7,2]])
+    # #test data for kd tree build
+    # x_train=np.array([[2,3],
+    #          [5,4],
+    #          [9,6],
+    #          [4,7],
+    #          [8,1],
+    #          [7,2]])
     y_test_pre2 = kdBasedKNN(x_test, x_train, y_train, k, p)
 
